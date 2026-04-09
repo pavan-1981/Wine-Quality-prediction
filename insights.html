@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vintner AI - Data Insights</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Vintner <span>AI</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Overview</a></li>
+            <li><a href="prediction.html">Prediction Engine</a></li>
+            <li><a href="insights.html" class="active">Data Insights</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="btn-primary">EXPORT REPORT</button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Insights & Data Vis Section -->
+        <section id="insights" class="data-vis" style="border-top: none; padding-top: 3rem;">
+            <div class="section-header">
+                <h2>Model Architecture & Insights</h2>
+                <div class="line-label">
+                    <span class="line"></span>
+                    <span class="label">DATA PREPROCESSING & TRAINING</span>
+                </div>
+            </div>
+
+            <!-- ML Process Info -->
+            <div class="process-cards">
+                <div class="card card-light">
+                    <h4><i class="bi bi-funnel"></i> Preprocessing</h4>
+                    <p>Dataset cleaned using mean imputation for NaN values. Features normalized using Standard Scaler to standardize distributions (Mean=0, Variance=1) prior to modeling.</p>
+                </div>
+                <div class="card card-light">
+                    <h4><i class="bi bi-diagram-2"></i> Train/Test Split</h4>
+                    <p>Rigorous 80/20 data split. 80% (1,279 samples) used for training the ensemble models. 20% (320 samples) strictly reserved for blind validation to prevent overfitting.</p>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="chart-grid">
+                <div class="chart-box">
+                    <h3>Algorithm Accuracy Comparison</h3>
+                    <canvas id="accuracyChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <h3>Feature Impact Analysis (Random Forest)</h3>
+                    <canvas id="featureImpactChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-box full-width-chart">
+                <h3>Quality Distribution Plot</h3>
+                <canvas id="distributionChart"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-logo">Vintner<br>AI</div>
+        <div class="footer-copy">
+            © 2024 VINTNER AI. ML DASHBOARD SYSTEM.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

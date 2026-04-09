@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vintner AI - Prediction Engine</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Vintner <span>AI</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Overview</a></li>
+            <li><a href="prediction.html" class="active">Prediction Engine</a></li>
+            <li><a href="insights.html">Data Insights</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="btn-primary">EXPORT REPORT</button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Prediction Engine -->
+        <section id="playground" class="dashboard-engine" style="border-top: none; padding-top: 3rem;">
+            <div class="section-header">
+                <h2>Prediction Engine</h2>
+                <div class="header-actions">
+                    <select id="model-select" class="custom-select">
+                        <option value="rf">Algorithm: Random Forest (Best)</option>
+                        <option value="dt">Algorithm: Decision Tree</option>
+                        <option value="knn">Algorithm: K-Nearest Neighbors</option>
+                        <option value="lr">Algorithm: Linear Regression</option>
+                    </select>
+                    <button id="btn-autofill" class="btn-secondary"><i class="bi bi-magic"></i> Auto-fill Demo Data</button>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Left Sidebar: History -->
+                <aside class="dashboard-sidebar">
+                    <h3>Prediction History</h3>
+                    <div id="history-list" class="history-list">
+                        <!-- History items injected here -->
+                        <div class="empty-history">No predictions run yet.</div>
+                    </div>
+                </aside>
+
+                <!-- Center Panel: 11 Inputs -->
+                <div class="dashboard-main panel-card">
+                    <h3>Chemical Profile Inputs</h3>
+                    <div class="input-grid">
+                        <div class="control-group"><label>Fixed Acidity <span id="val-fixed_acidity">7.4</span></label><input type="range" id="fixed_acidity" class="slider" min="4.0" max="15.0" step="0.1" value="7.4"></div>
+                        <div class="control-group"><label>Volatile Acidity <span id="val-volatile_acidity">0.7</span></label><input type="range" id="volatile_acidity" class="slider" min="0.1" max="1.5" step="0.01" value="0.7"></div>
+                        <div class="control-group"><label>Citric Acid <span id="val-citric_acid">0.0</span></label><input type="range" id="citric_acid" class="slider" min="0.0" max="1.0" step="0.01" value="0.0"></div>
+                        <div class="control-group"><label>Residual Sugar <span id="val-residual_sugar">1.9</span></label><input type="range" id="residual_sugar" class="slider" min="0.5" max="15.0" step="0.1" value="1.9"></div>
+                        <div class="control-group"><label>Chlorides <span id="val-chlorides">0.076</span></label><input type="range" id="chlorides" class="slider" min="0.01" max="0.2" step="0.001" value="0.076"></div>
+                        <div class="control-group"><label>Free SO2 <span id="val-free_so2">11</span></label><input type="range" id="free_so2" class="slider" min="1" max="70" step="1" value="11"></div>
+                        <div class="control-group"><label>Total SO2 <span id="val-total_so2">34</span></label><input type="range" id="total_so2" class="slider" min="6" max="280" step="1" value="34"></div>
+                        <div class="control-group"><label>Density <span id="val-density">0.9978</span></label><input type="range" id="density" class="slider" min="0.9900" max="1.0030" step="0.0001" value="0.9978"></div>
+                        <div class="control-group"><label>pH <span id="val-ph">3.51</span></label><input type="range" id="ph" class="slider" min="2.5" max="4.0" step="0.01" value="3.51"></div>
+                        <div class="control-group"><label>Sulphates <span id="val-sulphates">0.56</span></label><input type="range" id="sulphates" class="slider" min="0.2" max="2.0" step="0.01" value="0.56"></div>
+                        <div class="control-group span-full"><label>Alcohol (%) <span id="val-alcohol">9.4</span></label><input type="range" id="alcohol" class="slider" min="8.0" max="15.0" step="0.1" value="9.4"></div>
+                    </div>
+                    <button class="btn-primary btn-run" id="run-prediction">EXECUTE PREDICTION INFERENCE</button>
+                </div>
+
+                <!-- Right Panel: Results & Smart Traits -->
+                <div class="dashboard-results result-card glass-panel">
+                    <div class="model-status">
+                        <div class="status-indicator" id="status-dot"></div>
+                        <span id="status-text">MODEL READY</span>
+                    </div>
+                    
+                    <div class="score-container">
+                        <div class="prediction-value">
+                            <span class="score" id="pred-score">--</span><span class="total">/ 10</span>
+                        </div>
+                        <div class="prediction-label">QUALITY SCORE</div>
+                    </div>
+
+                    <div class="category-badge" id="category-badge">Awaiting Data</div>
+                    
+                    <div class="confidence-meter">
+                        <div class="confidence-header">
+                            <span>CONFIDENCE SCORE</span>
+                            <span id="conf-val">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" id="conf-progress" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="smart-suggestions" id="smart-suggestions">
+                        <h4>Smart Insights</h4>
+                        <ul id="insight-list">
+                            <li>Run a prediction to generate personalized insights based on chemical weaknesses.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-logo">Vintner<br>AI</div>
+        <div class="footer-copy">
+            © 2024 VINTNER AI. ML DASHBOARD SYSTEM.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
